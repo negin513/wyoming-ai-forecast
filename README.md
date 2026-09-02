@@ -1,22 +1,18 @@
-# Wyoming AI weather forecast
+# AI Weather Forecasting over Wyoming
 
-Notebooks that run NVIDIA Earth2Studio AI weather models and look at the result over Wyoming.
+Hands-on notebooks for the University of Wyoming training through Earth2Studio. 
 
 | Notebook | What it does |
 |---|---|
-| [`wyoming_ai_forecast.ipynb`](wyoming_ai_forecast.ipynb) | 5-day deterministic FourCastNet (FCN) forecast from GFS analysis, cropped to Wyoming. |
-| [`aiwp_stormscope_wyoming.ipynb`](aiwp_stormscope_wyoming.ipynb) | FourCastNet 3 (hourly, via InterpModAFNO) providing `z500` conditioning to **StormScope** GOES + MRMS nowcasting on the CONUS grid, analysed and verified over Wyoming. Executed, with outputs embedded. |
+| [`01_wyoming_ai_forecast.ipynb`](01_wyoming_ai_forecast.ipynb) | 5-day deterministic **FourCastNet (FCN)** forecast from GFS analysis, cropped to Wyoming (`t2m`, `u10m`, `v10m`, `msl`). |
+| [`02_stormscope_wyoming_demo.ipynb`](02_stormscope_wyoming_demo.ipynb) | Nowcasting with **StormScope** over Wyoming. |
 
-## AIWP → StormScope over Wyoming
 
-Pipeline: GFS analysis → FCN3 + surface-pressure diagnostic + InterpModAFNO (hourly `z500`) → StormScope GOES `6km_1hr` (conditioned on the AIWP `z500`) → StormScope MRMS `6km_1hr` (conditioned on the forecast GOES imagery) → Wyoming crop, verification against observed MRMS, NetCDF export.
+## References
 
-Case: 2024-07-17, FCN3 init 12 UTC, StormScope init 18 UTC, six hourly steps. Major Wyoming towns (Cheyenne, Laramie, Casper, Gillette, Rock Springs, Sheridan, Jackson, Evanston, Riverton, Cody) are marked on the Wyoming maps.
+- [Documentation](https://nvidia.github.io/earth2studio/) · [Install guide](https://nvidia.github.io/earth2studio/main/userguide/about/install/)
+- [Prognostic model catalog](https://nvidia.github.io/earth2studio/main/modules/models_px/)
+- [Examples gallery](https://nvidia.github.io/earth2studio/main/examples/) · [StormScope GOES/MRMS example](https://nvidia.github.io/earth2studio/main/examples/04_nowcasting/03_stormscope_goes_example/)
+- [Source code](https://github.com/NVIDIA/earth2studio) · [Issues](https://github.com/NVIDIA/earth2studio/issues)
 
-![Hourly Wyoming forecast](outputs/wyoming_hourly.png)
-![Forecast vs observed](outputs/wyoming_fc_vs_obs.png)
-![Verification](outputs/wyoming_verification.png)
-![CONUS context](outputs/conus_final_step.png)
-![FCN3 z500](outputs/aiwp_z500.png)
-
-Requirements: `earth2studio[fcn3,interp-modafno,stormscope,data]` (NATTEN with libnatten, torch-harmonics, makani), cartopy. `build_nb.py` regenerates the notebook source; `run_nb.sh` executes it headless with `jupyter nbconvert`.
+- **StormScope**: Pathak et al., *Learning Accurate Storm-Scale Evolution from Observations*, [arXiv:2601.17268](https://arxiv.org/abs/2601.17268)
