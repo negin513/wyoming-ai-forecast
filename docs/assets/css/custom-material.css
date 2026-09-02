@@ -241,3 +241,8 @@
   box-shadow: inset 0 -3px 0 var(--md-primary-fg-color);
 }
 
+/* Hide the right-hand page TOC (notebooks generate too many headings for it to be useful) */
+.md-sidebar--secondary {
+  display: none;
+}
+
