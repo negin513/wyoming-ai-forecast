@@ -10,9 +10,8 @@ site_dir: site
 # mkdocs-jupyter can only render notebooks that live under docs_dir.
 nav:
   - Home: index.md
-  - Notebooks:
-      - Wyoming AI forecast: 01_wyoming_ai_forecast.ipynb
-      - StormScope over Wyoming: 02_stormscope_wyoming_demo.ipynb
+  - Wyoming AI forecast: 01_wyoming_ai_forecast.ipynb
+  - StormScope Nowcasting over Wyoming: 02_stormscope_wyoming_demo.ipynb
 
 theme:
   name: material
