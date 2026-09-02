@@ -46,6 +46,7 @@ os.makedirs("outputs", exist_ok=True)
 
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
+import matplotlib.patheffects as pe
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -77,6 +78,20 @@ SEED = 1234
 
 # Wyoming bounding box (degrees; lon in [-180, 180])
 WY = dict(lat_min=41.0, lat_max=45.0, lon_min=-111.05, lon_max=-104.05)
+
+# Major Wyoming cities/towns to mark on the maps: name -> (lat, lon)
+WY_CITIES = {
+    "Cheyenne": (41.140, -104.820),
+    "Laramie": (41.311, -105.591),
+    "Casper": (42.867, -106.313),
+    "Gillette": (44.291, -105.502),
+    "Rock Springs": (41.587, -109.203),
+    "Sheridan": (44.797, -106.956),
+    "Jackson": (43.480, -110.762),
+    "Evanston": (41.268, -110.963),
+    "Riverton": (43.025, -108.380),
+    "Cody": (44.526, -109.056),
+}
 
 time_aiwp = to_time_array([START_TIME_AIWP])
 time_ss = to_time_array([START_TIME_STORMSCOPE])
@@ -267,6 +282,16 @@ def draw_wy_box(ax, **kw):
     lats = [WY["lat_min"], WY["lat_min"], WY["lat_max"], WY["lat_max"], WY["lat_min"]]
     ax.plot(lons, lats, transform=ccrs.PlateCarree(), **kw)
 
+def add_cities(ax, color="white", edge="black", fontsize=7, label=True):
+    # Mark the Wyoming cities with a dot and (optionally) a name label
+    for name, (lat, lon) in WY_CITIES.items():
+        ax.plot(lon, lat, marker="o", markersize=4, markerfacecolor=color, markeredgecolor=edge,
+                markeredgewidth=0.8, linestyle="none", transform=ccrs.PlateCarree(), zorder=10)
+        if label:
+            ax.annotate(name, xy=(lon, lat), xycoords=ccrs.PlateCarree()._as_mpl_transform(ax),
+                        xytext=(4, 3), textcoords="offset points", fontsize=fontsize, color=color,
+                        path_effects=[pe.withStroke(linewidth=1.5, foreground=edge)], zorder=11)
+
 def plot_goes_mrms(ax, ir, refc, title):
     im = ax.pcolormesh(lon_m, lat_m, ir, transform=ccrs.PlateCarree(), cmap="gray_r", shading="auto", vmin=200, vmax=300)
     refc_masked = np.where(refc <= 5, np.nan, refc)
@@ -281,6 +306,7 @@ ax = plt.axes(projection=proj_hrrr)
 im, im2 = plot_goes_mrms(ax, goes_fc[k, i_ir], mrms_fc[k, i_refc],
                          f"StormScope (AIWP-conditioned) valid {str(valid_times[k])[:16]} UTC, lead +{k+1} h")
 draw_wy_box(ax, color="#2a78d6", linewidth=2)
+add_cities(ax, label=False)
 plt.colorbar(im, ax=ax, orientation="horizontal", pad=0.03, shrink=0.45, label="GOES ABI-13 clean IR brightness temperature [K]")
 plt.colorbar(im2, ax=ax, orientation="horizontal", pad=0.08, shrink=0.45, label="MRMS composite reflectivity [dBZ]")
 plt.tight_layout(); plt.savefig("outputs/conus_final_step.png", dpi=150); plt.show()""")
@@ -302,7 +328,10 @@ fig.suptitle("FCN3 (AIWP) 500 hPa geopotential height used to condition StormSco
 fig.colorbar(cf, ax=axes, orientation="horizontal", shrink=0.5, pad=0.06, label="500 hPa geopotential height [m]")
 plt.savefig("outputs/aiwp_z500.png", dpi=150); plt.show()""")
 
-md("### Hourly Wyoming zoom: forecast reflectivity on forecast IR")
+md("""### Hourly Wyoming zoom: forecast reflectivity on forecast IR
+
+Major towns (Cheyenne, Laramie, Casper, Gillette, Rock Springs, Sheridan, Jackson, Evanston,
+Riverton, Cody) are marked for orientation.""")
 code(r"""ncol = 3
 nrow = int(np.ceil(N_STEPS / ncol))
 fig, axes = plt.subplots(nrow, ncol, figsize=(5 * ncol, 3.9 * nrow), subplot_kw=dict(projection=proj_hrrr))
@@ -311,6 +340,7 @@ for k, ax in enumerate(axes.ravel()):
         ax.set_visible(False); continue
     im, im2 = plot_goes_mrms(ax, goes_fc[k, i_ir], mrms_fc[k, i_refc], f"+{k+1} h  valid {str(valid_times[k])[11:16]} UTC")
     ax.set_extent(WY_EXTENT, crs=ccrs.PlateCarree())
+    add_cities(ax, fontsize=6)
 fig.suptitle(f"StormScope forecast over Wyoming, init {START_TIME_STORMSCOPE:%Y-%m-%d %H} UTC (z500 from FCN3)", y=1.0)
 fig.colorbar(im2, ax=axes, orientation="horizontal", shrink=0.4, pad=0.03, label="Forecast MRMS composite reflectivity [dBZ]")
 plt.savefig("outputs/wyoming_hourly.png", dpi=150); plt.show()""")
@@ -365,6 +395,7 @@ for ax, field, name in [(axes[0], mrms_fc[k, i_refc], "StormScope forecast"), (a
                         cmap="magma", shading="auto", vmin=5, vmax=60)
     ax.add_feature(cfeature.STATES, edgecolor="black", linewidth=0.8)
     ax.set_extent(WY_EXTENT, crs=ccrs.PlateCarree())
+    add_cities(ax, color="black", edge="white", fontsize=7)
     ax.set_title(f"{name}, valid {str(valid_times[k])[:16]} UTC (+{k+1} h)", fontsize=10)
 fig.colorbar(im2, ax=axes, orientation="horizontal", shrink=0.4, pad=0.04, label="Composite reflectivity [dBZ]")
 plt.savefig("outputs/wyoming_fc_vs_obs.png", dpi=150); plt.show()""")

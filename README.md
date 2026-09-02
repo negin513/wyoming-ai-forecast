@@ -11,7 +11,7 @@ Notebooks that run NVIDIA Earth2Studio AI weather models and look at the result 
 
 Pipeline: GFS analysis → FCN3 + surface-pressure diagnostic + InterpModAFNO (hourly `z500`) → StormScope GOES `6km_1hr` (conditioned on the AIWP `z500`) → StormScope MRMS `6km_1hr` (conditioned on the forecast GOES imagery) → Wyoming crop, verification against observed MRMS, NetCDF export.
 
-Case: 2024-07-17, FCN3 init 12 UTC, StormScope init 18 UTC, six hourly steps.
+Case: 2024-07-17, FCN3 init 12 UTC, StormScope init 18 UTC, six hourly steps. Major Wyoming towns (Cheyenne, Laramie, Casper, Gillette, Rock Springs, Sheridan, Jackson, Evanston, Riverton, Cody) are marked on the Wyoming maps.
 
 ![Hourly Wyoming forecast](outputs/wyoming_hourly.png)
 ![Forecast vs observed](outputs/wyoming_fc_vs_obs.png)
