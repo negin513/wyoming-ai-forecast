@@ -1,0 +1,28 @@
+site_name: Wyoming AI Weather Forecast
+site_description: Earth2Studio AI weather forecast notebooks for University of Wyoming training
+site_url: !ENV [SITE_URL, "https://negin513.github.io/wyoming-ai-forecast/"]
+repo_url: https://github.com/negin513/wyoming-ai-forecast
+docs_dir: docs
+site_dir: site
+
+# Notebooks live at the repo root (so they're easy to open/run directly) and are
+# copied into docs/ by `scripts/sync_notebooks.sh` before each build, since
+# mkdocs-jupyter can only render notebooks that live under docs_dir.
+nav:
+  - Home: index.md
+  - Notebooks:
+      - Wyoming AI forecast: 01_wyoming_ai_forecast.ipynb
+      - StormScope over Wyoming: 02_stormscope_wyoming_demo.ipynb
+
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - content.code.copy
+
+plugins:
+  - search
+  - mkdocs-jupyter:
+      execute: false
+      include_source: true

@@ -1,0 +1,4 @@
+site/
+.ipynb_checkpoints/
+.cache/
+docs/*.ipynb
