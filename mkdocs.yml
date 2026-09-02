@@ -6,7 +6,7 @@ docs_dir: docs
 site_dir: site
 
 # Notebooks live at the repo root (so they're easy to open/run directly) and are
-# copied into docs/ by `scripts/sync_notebooks.sh` before each build, since
+# copied into docs/ before each build (see CI/deploy workflows), since
 # mkdocs-jupyter can only render notebooks that live under docs_dir.
 nav:
   - Home: index.md
