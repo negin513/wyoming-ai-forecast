@@ -11,8 +11,7 @@ site_dir: site
 nav:
   - Home: index.md
   - Wyoming AI forecast: 01_wyoming_ai_forecast.ipynb
-  - StormScope Nowcasting over Wyoming: 02_stormscope_wyoming_demo.ipynb
-  - StormScope Nowcasting over Wyoming (v2): 02_stormscope_wyoming_demo_v2.ipynb
+  - StormScope Nowcasting over Wyoming: 02_stormscope_wyoming_demo_v2.ipynb
 
 theme:
   name: material
