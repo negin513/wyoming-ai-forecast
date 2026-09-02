@@ -20,6 +20,32 @@ theme:
     - navigation.instant
     - navigation.tracking
     - content.code.copy
+  font:
+    code: Roboto Mono
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: light
+      primary: custom
+      accent: lime
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: dark
+      primary: custom
+      accent: lime
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  logo: assets/logo/nvidia-logo.svg
+  favicon: assets/logo/nvidia-logo.svg
+  icon:
+    repo: fontawesome/brands/github
+
+extra_css:
+  - assets/css/color-schemes.css
+  - assets/css/fonts.css
+  - assets/css/custom-material.css
 
 plugins:
   - search
