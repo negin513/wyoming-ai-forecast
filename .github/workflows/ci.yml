@@ -25,6 +25,6 @@ jobs:
       # mkdocs-jupyter can only render notebooks that live under docs_dir, so copy
       # the root-level notebooks in (copy, not symlink, since mkdocs-jupyter
       # rewrites the file it converts and a symlink would corrupt the source).
-      - run: cp 01_wyoming_ai_forecast.ipynb 02_stormscope_wyoming_demo.ipynb docs/
+      - run: cp 01_wyoming_ai_forecast.ipynb 02_stormscope_wyoming_demo.ipynb 02_stormscope_wyoming_demo_v2.ipynb docs/
       - name: Build with strict mode
         run: mkdocs build --strict
